@@ -1,0 +1,18 @@
+{
+  "$ref": "#/definitions/unit-build-config",
+  "definitions": {
+    "unit-build-config": {
+      "type": "object",
+      "not": { "required": [ "key", "class", "_class", "name", "unit", "config" ] },
+      "properties": {
+        "units": {
+          "type": "object",
+          "patternProperties": {
+            "^[а-яА-Я\\w\\-]+:[а-яА-Я\\w\\-]+$": { "$ref": "#/definitions/unit-build-config" }
+          },
+          "additionalProperties": false
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "cyber-builder",
+  "version": "0.0.0",
+  "description": "buid, and start",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ozertx/cyber-builder.git"
+  },
+  "author": "ozertx",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ozertx/cyber-builder/issues"
+  },
+  "homepage": "https://github.com/ozertx/cyber-builder#readme",
+  "dependencies": {
+    "ajv": "^8.6.3"
+  }
+}
