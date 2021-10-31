@@ -8,13 +8,12 @@ const Unit = class {
   key = ''
   units = {}
 
+
   async init() {
 
-    console.log('--', this.name)
-
     for (let key in this.units ) {
-      const unit = this.units[key] 
-      await unit.init()
+      const unit = this.units[key]
+      if (unit.init ) await unit.init()
     }
 
     return true
@@ -28,8 +27,6 @@ const Unit = class {
 
       for (let unitKey in config['units'] ) {
         let unitConfig = config['units'][unitKey]
-
-        console.log("unitConfig", unitConfig)
 
         const [key, className] = unitKey.split(':')
         const UnitClass = unitClasses[className] 

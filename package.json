@@ -4,7 +4,7 @@
   "description": "buid, and start",
   "main": "index.js",
   "scripts": {
-    "dev": "node index.js"
+    "dev": "nodemon -e .js,.json --exec node index.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/ozertx/cyber-builder#readme",
   "dependencies": {
-    "ajv": "^8.6.3"
+    "ajv": "^8.6.3",
+    "nodemon": "^2.0.14",
+    "yaml": "^1.10.2"
   }
 }

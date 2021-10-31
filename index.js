@@ -1,5 +1,6 @@
 
 const monoScope = require('./monoScope')
+const { baseDefinitions } = monoScope
 
 console.log(`[index] loading buidConfig`)
 
@@ -8,8 +9,32 @@ console.log(`[index] loading buidConfig`)
 const buidConfig = require('./defaultBuild')
 
 
+function validateUnitsClasses(unitsClasses) {
+
+
+
+}
+
 
 async function start(buidConfig) {
+  const { hooks, unitsClasses } = buidConfig
+
+
+
+  for (let unitKey in unitsClasses) {
+    const Class = unitsClasses[unitKey]
+
+    console.log(Object.getOwnPropertyNames(Class) )
+
+
+    if (Class === baseDefinitions.Unit) continue
+
+    if (!Class.configSchema) {
+            
+    }
+
+  }
+ 
 
   console.log(`[start] loading buidConfig`)
 
@@ -23,16 +48,20 @@ async function start(buidConfig) {
 
   let buildedSystem = cyberBuilder.build()
 
-  console.log(`[start] system init`)
+  if (hooks.afterBuild) {
+    hooks.afterBuild(buildedSystem)
+  }
 
-  await buildedSystem.init()
+  // console.log(`[start] system init`)
 
-  console.log(`[start] system start`)
+  // await buildedSystem.init()
+
+  // console.log(`[start] system start`)
 
 
-  await buildedSystem.start()
+  // await buildedSystem.start()
 
-  console.log(`[start] finish OK`)
+  // console.log(`[start] finish OK`)
 
 
 }

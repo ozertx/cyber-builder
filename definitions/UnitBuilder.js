@@ -10,13 +10,12 @@ const UnitBuilder = class {
   buildConfig = {}
   scope = {}
   params = {}
-  unitClasses = { Unit }
   log = console.log
 
   build() {
 
     const { buildUnit } = this.buildConfig
-    const newUnit = new Unit(buildUnit, { ...this.unitClasses } )
+    const newUnit = new Unit(buildUnit, { ...this.buildConfig.unitsClasses } )
 
     return newUnit
   }
@@ -34,6 +33,8 @@ const UnitBuilder = class {
       this.log(ajv.errors)
       throw new Error('buidConfig validation error')
     }
+
+
 
   }
 }
