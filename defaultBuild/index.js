@@ -1,11 +1,29 @@
 
-let baseDefinitions = require('../definitions')
+const { Unit } = require('../cyber-builder')
 
 
-const unitsClasses = {
-  Unit: baseDefinitions.Unit,
-  KubApp: require('./units/KubApp')
+
+class KubApp extends Unit {
+
+  static configSchema = {
+    
+  }
+
+  async init() {
+    console.log(this.config)
+    return true
+  }
+
+  async execute(data, params) {
+    console.log(this.config)
+    let rv = yaml.stringify({ aaa: 1, bbb: "dsdsd", ccc: { dfddf: 2 } })
+    console.log(rv)
+  }
+
 }
+
+
+
 
 const hooks = {
   afterBuild: async (buildedUnit) => {
@@ -21,6 +39,26 @@ const hooks = {
   }
 }
 
+
+
+const buildConfig = {
+  Units: {
+    KubApp
+  },
+
+  hooks,
+  "buildUnit": {
+
+    "units": {
+      // "params:KubParams": {},
+      "app:KubApp": {
+
+      }
+    }
+  }
+}
+
+module.exports = buildConfig
 
 // const appConfig ={
 //   "images": {
@@ -55,21 +93,3 @@ const hooks = {
 //                   number: 8080
 // ``
 // }
-
-const buildConfig = {
-
-
-  unitsClasses,
-  hooks,
-  "buildUnit":{
-  
-    "units": {
-      // "params:KubParams": {},
-      "app:KubApp": {
-
-      }
-    }
-  }
-}
-
-module.exports = buildConfig

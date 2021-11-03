@@ -1,9 +1,10 @@
 
-const unitConfigSchema = require('./unitConfigSchema.json')
-const buildConfigSchema = require('./buildConfigSchema.json')
+
+let { ajv, schemas } = require('./core')
 
 
-const { Unit, ajv } = require('./')
+const buildConfigSchema = schemas['build-config']
+
 
 const UnitBuilder = class {
 
@@ -21,7 +22,8 @@ const UnitBuilder = class {
   }
 
 
-  constructor(buidConfig, scope, params ) {
+  constructor(scope, buidConfig, params ) {
+    const { ajv } = scope
 
     if (!buidConfig) throw new Error('no build config')
     if (params) this.params = params

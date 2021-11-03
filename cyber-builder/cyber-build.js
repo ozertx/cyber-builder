@@ -1,19 +1,15 @@
 
-const monoScope = require('./monoScope')
-const { baseDefinitions } = monoScope
 
-console.log(`[index] loading buidConfig`)
+module.exports = async (scope, buildConfig ) => { 
+  if (!scope) throw new Error('Scope is not defined')
 
+  // validate configs here
 
-// mount it
-const buidConfig = require('./defaultBuild')
-
-
-function validateUnitsClasses(unitsClasses) {
 
 
 
 }
+
 
 
 async function start(buidConfig) {
@@ -24,17 +20,17 @@ async function start(buidConfig) {
   for (let unitKey in unitsClasses) {
     const Class = unitsClasses[unitKey]
 
-    console.log(Object.getOwnPropertyNames(Class) )
+    console.log(Object.getOwnPropertyNames(Class))
 
 
     if (Class === baseDefinitions.Unit) continue
 
     if (!Class.configSchema) {
-            
+
     }
 
   }
- 
+
 
   console.log(`[start] loading buidConfig`)
 
@@ -65,14 +61,3 @@ async function start(buidConfig) {
 
 
 }
-
-try {
-  start(buidConfig)
-}
-catch(err) {
-  console.log("system ERR")
-  console.log(err)
-  process.exit(0)
-}
-
-

@@ -1,10 +1,10 @@
 {
   "name": "cyber-builder",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "buid, and start",
-  "main": "index.js",
+  "main": "start.js",
   "scripts": {
-    "dev": "nodemon -e .js,.json --exec node index.js"
+    "dev": "nodemon -e .js,.json --exec node start.js"
   },
   "repository": {
     "type": "git",

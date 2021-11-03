@@ -1,19 +1,12 @@
 
 
-const yaml = require('yaml')
 
-const { Unit } = require('../../definitions')
-
-
-const configSchema = {
-
-}
+// Will be Unit
 
 
+module.exports = class KubApp {
 
-module.exports = class KubApp extends Unit {
-
-  static configSchema = configSchema
+  // static configSchema = 
 
   async init() {
     console.log(this.config)

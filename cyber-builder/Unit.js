@@ -1,4 +1,5 @@
 
+let { ajv } = require('./core')
 
 
 const Unit = class {
@@ -19,10 +20,11 @@ const Unit = class {
     return true
   }
 
-  constructor( config, unitClasses ) {
+  constructor( scope, unitConfig ) {
 
-    this.config = config
+    this.config = unitConfig
     
+
     if (config['units']) {
 
       for (let unitKey in config['units'] ) {
