@@ -47,10 +47,9 @@ const buildConfig = {
   },
 
   hooks,
-  "buildUnit": {
+  "build": {
 
     "units": {
-      // "params:KubParams": {},
       "app:KubApp": {
 
       }

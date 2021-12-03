@@ -1,4 +1,4 @@
 {
   "type": "object",
-  "required": ["buildUnit", "unitsClasses"]
+  "required": ["build", "Units"]
 }

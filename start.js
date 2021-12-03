@@ -12,6 +12,10 @@ async function start() {
   let buildResult = await build(monoscope, buidConfig)
 
 
+  console.log(`[index] started`)
+
+  console.log(buildResult)
+
 }
 
 

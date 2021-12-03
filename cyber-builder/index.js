@@ -5,7 +5,6 @@ const build = require('./cyber-build')
 
 const cyberBuilder = {
   ...core,
-
   Unit: require('./Unit'),
   UnitBuilder: require('./UnitBuilder'),
   cyberBuild: build,

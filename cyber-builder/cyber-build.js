@@ -1,13 +1,44 @@
+const { ajv, check } = require('./core')
 
 
 module.exports = async (scope, buildConfig ) => { 
   if (!scope) throw new Error('Scope is not defined')
+  if (!buildConfig) throw new Error('buildConfig is not defined')
 
   // validate configs here
 
+  if (!check['build-config'](buildConfig)) {
+    console.log(check['build-config'].errors)
+    throw new Error(`[build ERR]`)
+  }
+
+  const { build } = buildConfig
+
+  if (!check['unit-config'](build)) {
+    console.log(check['unit-config'].errors)
+    throw new Error(`[build ERR]`)
+  }
+
+  // BUILDING OBJECTS
+
+  
+
+  let result = {}
 
 
+  return result
+}
 
+async function iterateUnits (unitConfig, iterateFn ) {
+
+  const units = unitConfig.units || {}
+  const result = {}
+  iterateFn()
+  for (let unitName in units ) {
+    result[unitName] = await iterateUnits(units[unitName], iterateFn)
+  }
+
+  return result
 }
 
 
