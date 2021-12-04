@@ -1,7 +1,7 @@
 {
   "name": "cyber-builder",
   "version": "0.0.1",
-  "description": "buid, and start",
+  "description": "build, and start",
   "main": "start.js",
   "scripts": {
     "dev": "nodemon -e .js,.json --exec node start.js"
@@ -16,9 +16,12 @@
     "url": "https://github.com/ozertx/cyber-builder/issues"
   },
   "homepage": "https://github.com/ozertx/cyber-builder#readme",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "dependencies": {
-    "ajv": "^8.6.3",
-    "nodemon": "^2.0.14",
-    "yaml": "^1.10.2"
+    "ajv": "8.6.3",
+    "nodemon": "2.0.14",
+    "yaml": "1.10.2"
   }
 }
