@@ -27,6 +27,7 @@ const Color = {
 }
 
 const logLevelsColors = {
+  "INFO": "FgMagenta",
   "WARN": "FgYellow",
   "ERR": "FgRed",
 }
@@ -39,11 +40,11 @@ const logLevelPrefix = {
 const logText = (text, level ) => {
   const levelColor = logLevelsColors[level] ? Color[logLevelsColors[level]] : ''
 
-  return levelColor ? (levelColor + msg + levelColor) : msg
+  return levelColor ? (levelColor + text + levelColor) : text
 }
 
 const logFn = (text, level = 'DEBUG', params = {} ) => {
-  let text = logText(text, level)
+  text = logText(text, level)
   console.log(text)
 }
 

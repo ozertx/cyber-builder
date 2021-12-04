@@ -1,4 +1,4 @@
-const { ajv, check } = require('./core')
+const { ajv, check, log } = require('./core')
 
 
 module.exports = async (scope, buildConfig ) => { 
@@ -9,7 +9,7 @@ module.exports = async (scope, buildConfig ) => {
 
   if (!check['build-config'](buildConfig)) {
     console.log(check['build-config'].errors)
-    console.log(check['build-config'].errorsText())
+    log(check['build-config'].errorsText(),"INFO")
 
     throw new Error(`[build ERR]`)
   }

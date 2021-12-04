@@ -1,5 +1,7 @@
 const Ajv = require("ajv")
 const localize = require("ajv-i18n")
+const { log } = require("./log")
+
 
 const DEFAULT_LOCALIZE = 'ru'
 
@@ -47,7 +49,7 @@ for (const schemaName in schemas ) {
 
 const coreDependencies = {
   yaml: require('yaml'),
-  ajv, schemas, check
+  ajv, schemas, check, log
 }
 
 module.exports = coreDependencies
