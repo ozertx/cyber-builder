@@ -9,6 +9,8 @@ module.exports = async (scope, buildConfig ) => {
 
   if (!check['build-config'](buildConfig)) {
     console.log(check['build-config'].errors)
+    console.log(check['build-config'].errorsText())
+
     throw new Error(`[build ERR]`)
   }
 

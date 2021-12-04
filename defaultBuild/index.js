@@ -1,25 +1,23 @@
 
-const { Unit } = require('../cyber-builder')
+const KubApp = {
 
-
-
-class KubApp extends Unit {
-
-  static configSchema = {
+  "configSchema": {
     
-  }
+  },
+  "hooks": {
 
-  async init() {
-    console.log(this.config)
-    return true
-  }
+    async init() {
+      console.log(this.config)
+      return true
+    },
 
-  async execute(data, params) {
-    console.log(this.config)
-    let rv = yaml.stringify({ aaa: 1, bbb: "dsdsd", ccc: { dfddf: 2 } })
-    console.log(rv)
-  }
+    async execute(data, params) {
+      console.log(this.config)
+      let rv = yaml.stringify({ aaa: 1, bbb: "dsdsd", ccc: { dfddf: 2 } })
+      console.log(rv)
+    }
 
+  }
 }
 
 

@@ -1,4 +1,28 @@
 {
-  "type": "object",
-  "required": ["build", "Units"]
+  "$ref": "#/definitions/build-config",
+  "definitions": {
+    "build-config": {
+      "type": "object",
+      "required": ["build", "unitKindDefinitions"],
+      "properties": {
+        "unitKindDefinitions": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/unit-kind-definition" }
+        }
+      }
+    },
+    "unit-kind-definition": {
+      "type": "object",
+      "required": [ "kind", "version", "configSchema", "methods" ],
+      "properties": {
+        "kind": { "type": "string" },
+        "version": { 
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+(-[a-zA-Z]+)?$"
+        },
+        "configSchema": { "isSchema": 34 },
+        "methods": { "isLambda": "dd" }
+      }
+    }
+  }
 }
