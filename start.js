@@ -15,6 +15,7 @@ async function start() {
   }
   catch (err) {
     log("build ERR", "ERR")
+    console.log(err)
     console.log(err.toString())
   }
 }

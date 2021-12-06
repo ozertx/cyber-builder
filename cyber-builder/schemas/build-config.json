@@ -8,8 +8,11 @@
         "unitKindDefinitions": {
           "type": "array",
           "items": { "$ref": "#/definitions/unit-kind-definition" }
-        }
-      }
+        },
+        "hooks": { "$ref": "#/definitions/build-hooks" },
+        "build": {}
+      },
+      "additionalProperties": false
     },
     "unit-kind-definition": {
       "type": "object",
@@ -20,9 +23,13 @@
           "type": "string",
           "pattern": "^[0-9]+\\.[0-9]+(-[a-zA-Z]+)?$"
         },
-        "configSchema": { "isSchema": 34 },
-        "methods": { "isLambda": "dd" }
+        "configSchema": { "isSchema": true },
+        "methods": { "$ref": "#/definitions/build-hooks" }
       }
+    },
+    "build-hooks": {
+      "type": "object",
+      "additionalProperties": { "isLambda": true }
     }
   }
 }

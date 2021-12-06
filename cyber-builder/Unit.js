@@ -4,48 +4,46 @@ let { ajv } = require('./core')
 
 const Unit = class {
 
+  unitIndex = undefined
+  name = undefined
+  kind = undefined
+  title = undefined
   config = {}
-  className = 'noname'
-  key = ''
   units = {}
 
+  parentUnit = null
+  rootUnit = null
 
-  async init() {
 
-    for (let key in this.units ) {
-      const unit = this.units[key]
-      if (unit.init ) await unit.init()
-    }
+  constructor( unitConfig ) {
 
-    return true
-  }
-
-  constructor( scope, unitConfig ) {
-
+    this.unitIndex = unitConfig.unitIndex
+    this.name = unitConfig.name
+    this.title = unitConfig.name.split(':')[0]
+    this.kind = unitConfig.name.split(':')[1]
     this.config = unitConfig
-    
 
-    if (config['units']) {
+    // if (config['units']) {
 
-      for (let unitKey in config['units'] ) {
-        let unitConfig = config['units'][unitKey]
+    //   for (let unitKey in config['units'] ) {
+    //     let unitConfig = config['units'][unitKey]
 
-        const [key, className] = unitKey.split(':')
-        const UnitClass = unitClasses[className] 
+    //     const [key, className] = unitKey.split(':')
+    //     const UnitClass = unitClasses[className] 
 
-        if(!UnitClass) {
-          throw new Error(`unit class ${className} not found in registred unit classes ${Object.keys(unitClasses).join(';') }`)
-        }
+    //     if(!UnitClass) {
+    //       throw new Error(`unit class ${className} not found in registred unit classes ${Object.keys(unitClasses).join(';') }`)
+    //     }
 
-        let newUnit = new UnitClass(unitConfig, unitClasses)
+    //     let newUnit = new UnitClass(unitConfig, unitClasses)
 
-        newUnit.className = className
-        newUnit.key = key
+    //     newUnit.className = className
+    //     newUnit.key = key
 
-        this.units[key] = newUnit
+    //     this.units[key] = newUnit
 
-      }
-    }
+    //   }
+    // }
     
   }
 }

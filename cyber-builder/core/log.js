@@ -40,7 +40,7 @@ const logLevelPrefix = {
 const logText = (text, level ) => {
   const levelColor = logLevelsColors[level] ? Color[logLevelsColors[level]] : ''
 
-  return levelColor ? (levelColor + text + levelColor) : text
+  return levelColor ? (levelColor + text + Color.Reset) : text
 }
 
 const logFn = (text, level = 'DEBUG', params = {} ) => {

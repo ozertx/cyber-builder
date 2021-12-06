@@ -3,6 +3,7 @@
   "definitions": {
     "unit-build-config": {
       "type": "object",
+      "required": [ "unitIndex" ],
       "not": { "required": [ "key", "class", "_class", "name", "unit", "config", "properties", "property", "type" ] },
       "properties": {
         "units": {

@@ -1,4 +1,5 @@
-const { ajv, check, log } = require('./core')
+const { ajv, check, log, throwValidatorErrors } = require('./core')
+const Unit = require('./Unit')
 
 
 module.exports = async (scope, buildConfig ) => { 
@@ -7,38 +8,89 @@ module.exports = async (scope, buildConfig ) => {
 
   // validate configs here
 
-  if (!check['build-config'](buildConfig)) {
-    console.log(check['build-config'].errors)
-    log(check['build-config'].errorsText(),"INFO")
+  buildConfig.build['unitIndex'] = 'root'
+  buildConfig.build.name = 'root:root'
 
-    throw new Error(`[build ERR]`)
-  }
+  if (!check['build-config'](buildConfig)) throwValidatorErrors(check['build-config'])
 
-  const { build } = buildConfig
+  const { build: buildUnit } = buildConfig
 
-  if (!check['unit-config'](build)) {
-    console.log(check['unit-config'].errors)
-    throw new Error(`[build ERR]`)
-  }
+  if (!check['unit-config'](buildUnit)) throwValidatorErrors(check['unit-config'])
 
   // BUILDING OBJECTS
 
-  
 
+  // fix names
+  iterateUnitsDownUp(buildUnit, (unitConfig) => {
+    const units = unitConfig.units || {}
+    for (let unitName in units)  units[unitName].name = unitName 
+  })
+
+
+  // mk items
+  const rootUnitIndex = {}
+  let rootUnit = null
+  const resultItem = iterateUnitsUpDown(buildUnit, (unitConfig, parentResult) => {
+
+    const { unitIndex, name: unitName } = unitConfig
+    if (rootUnitIndex[unitIndex]) {
+      throw new Error(`unit ${unitConfig.name}, have alredy declared index: ${unitIndex}`)
+    }
+    
+    const newUnit = new Unit(unitConfig)
+    rootUnitIndex[unitIndex] = newUnit
+
+    if(!parentResult) { 
+      rootUnit = newUnit
+    }
+    else {
+      newUnit.parentUnit = parentResult
+      parentResult.units[unitName] = newUnit
+    }
+    newUnit.rootUnit = rootUnit
+
+    return newUnit
+  })
+
+  resultItem.index = rootUnitIndex
+
+  return resultItem
+}
+
+function iterateUnitsDownUp(unitConfig, iterateFn, params = {}) {
+
+  const units = unitConfig.units || {}
   let result = {}
-
+  for (let unitName in units) {
+    result[unitName] = iterateUnitsDownUp(units[unitName], iterateFn, params)
+  }
+  result = iterateFn(unitConfig, result)
 
   return result
 }
 
-async function iterateUnits (unitConfig, iterateFn ) {
+function iterateUnitsUpDown(unitConfig, iterateFn, upResult, params = {}) {
+
+  const units = unitConfig.units || {}
+  let result = {}
+  result = iterateFn(unitConfig, upResult)
+  for (let unitName in units) {
+    result[unitName] = iterateUnitsUpDown(units[unitName], iterateFn, result, params)
+  }
+
+  return result
+}
+
+
+
+async function iterateUnitsAsync (unitConfig, iterateFn ) {
 
   const units = unitConfig.units || {}
   const result = {}
-  iterateFn()
   for (let unitName in units ) {
-    result[unitName] = await iterateUnits(units[unitName], iterateFn)
+    result[unitName] = await iterateUnitsAsync(units[unitName], iterateFn)
   }
+  iterateFn(result)
 
   return result
 }
