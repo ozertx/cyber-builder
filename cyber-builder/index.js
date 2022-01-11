@@ -1,16 +1,14 @@
 
 const core = require('./core')
-
-const build = require('./cyber-build')
+const build = require('./helpers/cyber-build')
 
 const cyberBuilder = {
   ...core,
-  Unit: require('./Unit'),
-  UnitBuilder: require('./UnitBuilder'),
+  Unit: require('./units/Unit'),
   cyberBuild: build,
   build
 }
 
 module.exports = cyberBuilder
 
-cyberBuilder.start = require('./start')
+cyberBuilder.start = require('./helpers/start')

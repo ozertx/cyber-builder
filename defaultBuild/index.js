@@ -1,4 +1,7 @@
 
+// const CyberBuilder = require('../cyber-builder/units/Cyberbuilder.js')
+const CyberBuilder = require('../cyber-builder/units/CyberBuilder')
+
 const KubApp = {
   "kind": "KubApp",
   "version": "0.1",
@@ -22,16 +25,6 @@ const KubApp = {
   }
 }
 
-const CyberBuilder = {
-  "kind": "CyberBuilder",
-  "version": "0.1",
-
-  "configSchema": {},
-  "stateSchema": {},
-  "initialState": {},
-  "methods": { }
-}
-
 
 
 const hooks = {
@@ -52,7 +45,8 @@ const hooks = {
 
 const buildConfig = {
   kindsDefinition: {
-    CyberBuilder, KubApp
+    CyberBuilder, 
+    KubApp
   },
   hooks,
   build: {

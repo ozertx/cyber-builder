@@ -1,5 +1,5 @@
-const { ajv, check, log, throwValidatorErrors, lodash: { cloneDeep } } = require('./core')
-const Unit = require('./Unit')
+const { ajv, check, log, throwValidatorErrors, lodash: { cloneDeep } } = require('../core')
+const Unit = require('../units/Unit')
 
 
 module.exports = async (scope, buildConfig ) => { 
@@ -46,7 +46,6 @@ module.exports = async (scope, buildConfig ) => {
     }
     else {
       newUnit.links.parent = parentResult
-      parentResult.units[unitName] = newUnit
     }
     newUnit.links.root = rootUnit
     
@@ -68,7 +67,9 @@ module.exports = async (scope, buildConfig ) => {
 
     unit.spec.version = KindDefinition.version
     
-    
+    for (const methodName in KindDefinition.methods ) {
+      unit[methodName] = KindDefinition.methods[methodName]
+    }
     
     return {}
   })
