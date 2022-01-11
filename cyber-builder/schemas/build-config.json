@@ -16,7 +16,7 @@
     },
     "unit-kind-definition": {
       "type": "object",
-      "required": [ "kind", "version", "configSchema", "methods" ],
+      "required": [ "kind", "version", "configSchema", "methods", "initialState", "stateSchema" ],
       "properties": {
         "kind": { "type": "string" },
         "version": { 
@@ -24,7 +24,9 @@
           "pattern": "^[0-9]+\\.[0-9]+(-[a-zA-Z]+)?$"
         },
         "configSchema": { "isSchema": true },
-        "methods": { "$ref": "#/definitions/build-hooks" }
+        "methods": { "$ref": "#/definitions/build-hooks" },
+        "stateSchema": { "isSchema": true },
+        "initialState": { "type": "object" }
       }
     },
     "build-hooks": {

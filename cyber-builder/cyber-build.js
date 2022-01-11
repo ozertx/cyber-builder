@@ -1,4 +1,4 @@
-const { ajv, check, log, throwValidatorErrors } = require('./core')
+const { ajv, check, log, throwValidatorErrors, lodash: { cloneDeep } } = require('./core')
 const Unit = require('./Unit')
 
 
@@ -132,17 +132,5 @@ async function start(buidConfig) {
   if (hooks.afterBuild) {
     hooks.afterBuild(buildedSystem)
   }
-
-  // console.log(`[start] system init`)
-
-  // await buildedSystem.init()
-
-  // console.log(`[start] system start`)
-
-
-  // await buildedSystem.start()
-
-  // console.log(`[start] finish OK`)
-
 
 }

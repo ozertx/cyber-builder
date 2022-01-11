@@ -3,9 +3,9 @@ const KubApp = {
   "kind": "KubApp",
   "version": "0.1",
 
-  "configSchema": {
-    
-  },
+  "configSchema": { },
+  "stateSchema": { },
+  "initialState": { },
   "methods": {
 
     async init() {

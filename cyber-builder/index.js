@@ -11,16 +11,6 @@ const cyberBuilder = {
   build
 }
 
-
 module.exports = cyberBuilder
 
-
-
-
-// module.exports = (scope = {}) => {
-//   if( typeof(scope) != 'object') throw new Error('Scope is not object')
-
-//   Object.assign(scope, cyberBuilder)
-
-//   return scope
-// }
+cyberBuilder.start = require('./start')

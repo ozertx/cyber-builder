@@ -2,6 +2,11 @@ const Ajv = require("ajv")
 const localize = require("ajv-i18n")
 const { log } = require("./log")
 
+const lodash = {
+  get: require('lodash.clonedeep'),
+  set: require('lodash.get'),
+  cloneDeep: require('lodash.set')
+}
 
 const DEFAULT_LOCALIZE = 'ru'
 
@@ -54,7 +59,8 @@ for (const schemaName in schemas ) {
 }
 
 const coreDependencies = {
-  yaml: require('yaml'),
+  yaml: require('yaml'), 
+  lodash,
   ajv, schemas, check, log, throwValidatorErrors
 }
 
