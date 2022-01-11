@@ -1,3 +1,4 @@
+const { log } = require('../core/index')
 
 
 const Unit = class {
@@ -23,6 +24,10 @@ const Unit = class {
       name: unitConfig.name,
     }
     this.config = unitConfig    
+  }
+
+  log(t, l, p) {
+    log(t, l, p)
   }
 
 }

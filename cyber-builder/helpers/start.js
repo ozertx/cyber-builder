@@ -12,7 +12,11 @@ module.exports = async function start(buidConfig) {
     log(buildResult)
     log("buildResult ------------")
     log("init ------------")
-    await buildResult.init()
+    if( ! await buildResult.init() ) {
+      log("init fail", "ERR")
+    }
+    log("inited ------------")
+
     
   }
   catch (err) {

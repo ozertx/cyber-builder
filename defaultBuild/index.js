@@ -12,7 +12,7 @@ const KubApp = {
   "methods": {
 
     async init() {
-      console.log(this.config)
+      console.log("-->",this.spec)
       return true
     },
 
