@@ -9,14 +9,29 @@ module.exports = async function start(buidConfig) {
 
     // console.log(Object.keys(buildResult))
     
-    log(buildResult)
+    // log(buildResult)
     log("buildResult ------------")
     log("init ------------")
-    if( ! await buildResult.init() ) {
-      log("init fail", "ERR")
+    try {
+      await buildResult.init()
+    }
+    catch(err) {
+      log(err.toString(), "ERR")
+      log("INIT FAIL", "ERR")
+      process.exit(0)
     }
     log("inited ------------")
-
+    log("start ------------")
+    try {
+      await buildResult.start()
+      
+    }
+    catch (err) {
+      log(err.toString(), "ERR")
+      log("START FAIL", "ERR")
+      process.exit(0)
+    }
+    log("ON AIR! ------------")
     
   }
   catch (err) {

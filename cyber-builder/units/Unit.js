@@ -27,7 +27,7 @@ const Unit = class {
   }
 
   log(t, l, p) {
-    log(t, l, p)
+    log(`[${ this.spec.name }] ${t}`, l, p)
   }
 
 }

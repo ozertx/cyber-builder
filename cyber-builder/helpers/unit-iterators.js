@@ -19,10 +19,11 @@ module.exports.iterateUnitUpDownAsync = async (unitableObject, iterateFn, upResu
   const fnResult = await iterateFn(unitableObject, upResult)
   if (typeof (fnResult) != 'object') throw new Error(`iterateUnitUpDown iterateFn fnResult should be object`)
 
-  const result = { units: {} }
+  const result = { ...fnResult, units: {} }
   const objectUnits = unitableObject.units || {}
   for (let unitName in objectUnits) {
     result.units[unitName] = await module.exports.iterateUnitUpDownAsync(objectUnits[unitName], iterateFn, result, params)
+    console.log("1",result.units[unitName])
   }
   return result
 }

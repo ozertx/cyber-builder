@@ -12,14 +12,24 @@ const KubApp = {
   "methods": {
 
     async init() {
-      console.log("-->",this.spec)
+
+      if( Math.random()*10>5) throw new Error("dev init error")
+      this.log(`--> ${JSON.stringify(this.spec)}`)
+
+      return true
+    },
+
+    async start() {
+
+      if (Math.random() * 10 > 5) throw new Error("dev start error")
+      this.log(`--> ${JSON.stringify(this.spec) }` )
       return true
     },
 
     async execute(data, params) {
-      console.log(this.config)
+      this.log(this.config)
       let rv = yaml.stringify({ aaa: 1, bbb: "dsdsd", ccc: { dfddf: 2 } })
-      console.log(rv)
+      this.log(rv)
     }
 
   }

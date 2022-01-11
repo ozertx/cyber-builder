@@ -10,27 +10,56 @@ module.exports = {
   "methods": { 
 
     async init() {
-
+      const initResult = await this.iterateMethodCall('init')
       let valid = true
-
-      for( const unitName in this.units) try {
-        const result = await iterateUnitUpDownAsync(this.units[unitName], async (unitableObject, upResult) => {
-          if (unitableObject.init) {
-            const initResult = await unitableObject.init()
-            valid = valid && initResult
-          }
-          return { valid }
-        })
-      }
-      catch(err) {
-        this.log(err)
-        this.log(err.toString(), "ERR")
-        valid = false
+      for (const unitName in initResult.units) {
+        if (initResult.units[unitName].error) {
+          valid = false
+        }
       }
 
-      return valid
+      if(! valid ) throw new Error('some units init fail')
     },
 
+    async start() {
+      const initResult = await this.iterateMethodCall('start')
+      let valid = true
+      for (const unitName in initResult.units) {
+        if (initResult.units[unitName].error) {
+          valid = false
+        }
+      }
+
+      if (!valid) throw new Error('some units start fail')
+    },
+
+    async iterateMethodCall(methodName, p1, p2, params = {} ) {
+
+      const result = { units: {} }
+
+      for (const unitName in this.units) try {
+        const iterateResult = await iterateUnitUpDownAsync(this.units[unitName], async (unitableObject, upResult) => {
+          if (unitableObject[methodName]) {
+            const methodResult = await unitableObject[methodName](p1, p2)
+            return { result: methodResult }
+          }
+          return { }
+        })
+        result.units[unitName] = iterateResult
+      }
+      catch (err) {
+        this.log(err)
+        this.log(err.toString(), "ERR")        
+        result.units[unitName] = {
+          error: err.toString(),
+          err
+        }
+      }
+
+      return result
+
+    },
+    
     async execute(data, params) {
       console.log(this.config)
       let rv = yaml.stringify({ aaa: 1, bbb: "dsdsd", ccc: { dfddf: 2 } })
