@@ -5,23 +5,22 @@ const Unit = class {
   spec = {
     kind: undefined,
     version: undefined,
-    name: undefined,
-    index: undefined
+    name: undefined
+    // indexKey if defined
   }
   config = {}
   state = {}
   units = {}
-
-  parentUnit = null
-  rootUnit = null
+  links = {
+    parent: null,
+    root: null
+  }
 
   constructor( unitConfig ) {
     
     this.spec = {
       kind: unitConfig.name.split(':')[1],
-      version: "xx",
       name: unitConfig.name,
-      index: unitConfig.unitIndex
     }
     this.config = unitConfig    
   }

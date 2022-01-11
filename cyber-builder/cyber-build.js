@@ -6,54 +6,75 @@ module.exports = async (scope, buildConfig ) => {
   if (!scope) throw new Error('Scope is not defined')
   if (!buildConfig) throw new Error('buildConfig is not defined')
 
+  
   // validate configs here
-
-  buildConfig.build['unitIndex'] = 'root'
-  buildConfig.build.name = 'root:root'
-
+  
   if (!check['build-config'](buildConfig)) throwValidatorErrors(check['build-config'])
-
+  
   const { build: buildUnit } = buildConfig
-
+  
   if (!check['unit-config'](buildUnit)) throwValidatorErrors(check['unit-config'])
-
+  
   // BUILDING OBJECTS
-
-
+  
+  
   // fix names
   iterateUnitsDownUp(buildUnit, (unitConfig) => {
     const units = unitConfig.units || {}
     for (let unitName in units)  units[unitName].name = unitName 
   })
-
-
+  
+  
   // mk items
   const rootUnitIndex = {}
   let rootUnit = null
   const resultItem = iterateUnitsUpDown(buildUnit, (unitConfig, parentResult) => {
+    
+    const { indexKey, name: unitName } = unitConfig
 
-    const { unitIndex, name: unitName } = unitConfig
-    if (rootUnitIndex[unitIndex]) {
-      throw new Error(`unit ${unitConfig.name}, have alredy declared index: ${unitIndex}`)
+    const newUnit = new Unit(unitConfig)
+
+    if (indexKey) {
+      if (rootUnitIndex[indexKey]) throw new Error(`unit ${unitConfig.name}, have alredy declared index: ${indexKey}`)
+      newUnit.spec.indexKey = indexKey
+      
+      rootUnitIndex[indexKey] = newUnit
     }
     
-    const newUnit = new Unit(unitConfig)
-    rootUnitIndex[unitIndex] = newUnit
-
     if(!parentResult) { 
       rootUnit = newUnit
     }
     else {
-      newUnit.parentUnit = parentResult
+      newUnit.links.parent = parentResult
       parentResult.units[unitName] = newUnit
     }
-    newUnit.rootUnit = rootUnit
-
+    newUnit.links.root = rootUnit
+    
     return newUnit
   })
 
-  resultItem.index = rootUnitIndex
 
+  resultItem.index = rootUnitIndex
+  
+  
+  // init methods & state
+  const { kindsDefinition } = buildConfig
+  iterateUnitsUpDown(resultItem, (unit, parentResult) => {
+    
+    const { name, kind } = unit.spec
+
+    const KindDefinition = kindsDefinition[kind]
+    if (!KindDefinition) throw new Error(`unit ${name}, kind:${kind } not found in kindsDefinition`)
+
+    unit.spec.version = KindDefinition.version
+    
+    
+    
+    return {}
+  })
+  
+  resultItem.state = {}
+  
   return resultItem
 }
 
@@ -71,13 +92,13 @@ function iterateUnitsDownUp(unitConfig, iterateFn, params = {}) {
 
 function iterateUnitsUpDown(unitConfig, iterateFn, upResult, params = {}) {
 
-  const units = unitConfig.units || {}
-  let result = {}
-  result = iterateFn(unitConfig, upResult)
-  for (let unitName in units) {
-    result[unitName] = iterateUnitsUpDown(units[unitName], iterateFn, result, params)
-  }
+  const configUnits = unitConfig.units || {}
 
+  const result = iterateFn(unitConfig, upResult)
+  result.units = {}
+  for (let unitName in configUnits) {
+    result.units[unitName] = iterateUnitsUpDown(configUnits[unitName], iterateFn, result, params)
+  }
   return result
 }
 

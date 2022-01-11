@@ -3,9 +3,10 @@
   "definitions": {
     "unit-build-config": {
       "type": "object",
-      "required": [ "unitIndex" ],
+      "required": [ ],
       "not": { "required": [ "key", "class", "_class", "name", "unit", "config", "properties", "property", "type" ] },
       "properties": {
+        "indexKey": { "type": "string", "minLength":1 },
         "units": {
           "type": "object",
           "patternProperties": {

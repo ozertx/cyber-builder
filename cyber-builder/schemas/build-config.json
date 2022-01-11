@@ -3,11 +3,14 @@
   "definitions": {
     "build-config": {
       "type": "object",
-      "required": ["build", "unitKindDefinitions"],
+      "required": ["build", "kindsDefinition"],
       "properties": {
-        "unitKindDefinitions": {
-          "type": "array",
-          "items": { "$ref": "#/definitions/unit-kind-definition" }
+        "kindsDefinition": {
+          "type": "object",
+          "patternProperties": {
+            "^[\\w]+$": { "$ref": "#/definitions/unit-kind-definition" }
+          },
+          "additionalProperties": false
         },
         "hooks": { "$ref": "#/definitions/build-hooks" },
         "build": {}

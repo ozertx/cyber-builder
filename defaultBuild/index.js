@@ -22,6 +22,15 @@ const KubApp = {
   }
 }
 
+const CyberBuilder = {
+  "kind": "CyberBuilder",
+  "version": "0.1",
+
+  "configSchema": {},
+  "stateSchema": {},
+  "initialState": {},
+  "methods": { }
+}
 
 
 
@@ -42,16 +51,15 @@ const hooks = {
 
 
 const buildConfig = {
-  unitKindDefinitions: [
-    KubApp
-  ],
-
+  kindsDefinition: {
+    CyberBuilder, KubApp
+  },
   hooks,
   build: {
-
+    "name": "cyberBuilder:CyberBuilder",
     "units": {
       "app:KubApp": {
-        "unitIndex": "kubapp"
+        "indexKey": "kubapp"
 
 
       }
