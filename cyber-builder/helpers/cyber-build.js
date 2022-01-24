@@ -1,9 +1,11 @@
 const { ajv, check, log, throwValidatorErrors, lodash: { cloneDeep } } = require('../core')
 const Unit = require('../units/Unit')
+const CyberBuilder = require('../units/CyberBuilder')
 
 
-module.exports = async (scope, buildConfig ) => { 
-  if (!scope) throw new Error('Scope is not defined')
+
+module.exports = async ( buildConfig ) => { 
+  // if (!scope) throw new Error('Scope is not defined')
   if (!buildConfig) throw new Error('buildConfig is not defined')
 
   
@@ -15,6 +17,7 @@ module.exports = async (scope, buildConfig ) => {
   
   if (!check['unit-config'](buildUnit)) throwValidatorErrors(check['unit-config'])
   
+  buildConfig['kindsDefinition']['CyberBuilder'] = CyberBuilder
   // BUILDING OBJECTS
   
   

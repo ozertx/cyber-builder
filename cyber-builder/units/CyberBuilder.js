@@ -64,6 +64,12 @@ module.exports = {
       console.log(this.config)
       let rv = yaml.stringify({ aaa: 1, bbb: "dsdsd", ccc: { dfddf: 2 } })
       console.log(rv)
+    },
+
+
+    getUnit(unitName) {
+      return this.units[unitName]
     }
+
   }
 }

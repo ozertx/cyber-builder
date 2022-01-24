@@ -1,0 +1,9 @@
+{
+
+	"definitionsFolders": [
+		"./definitions/abstract-cli", 
+		"./definitions/docker-superapp"
+	],
+	"buildConfigPath": "./"
+
+}

@@ -1,0 +1,28 @@
+{
+
+  "kind": "DockerSuperapp",
+  "version": "0.1",
+  "name": "devApp",
+
+
+  "values": {
+    "value1": "sddds",
+    "value2": "vv122"
+  },
+
+  "folders": {
+    "sharedFs": "./shared",
+    "app1PrivateFs": "./app1"
+  },
+
+  "images": {
+    "imageApp01": "app1-docker-image:1.0.0",
+    "imageApp02": "app2-docker-image:1.0.2"
+  },
+
+  "containers": {
+    "container1": {
+      
+    }
+  }
+}

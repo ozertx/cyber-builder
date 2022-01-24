@@ -1,11 +1,12 @@
 {
   "name": "cyber-builder",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "build, and start",
   "main": "start.js",
   "scripts": {
     "dev": "nodemon -e .js,.json --exec node entrypoint-dev.js",
-    "entrypoint_docker": "node start.js"
+    "entrypoint_docker": "node start.js",
+    "publish": "npm publish"
   },
   "repository": {
     "type": "git",

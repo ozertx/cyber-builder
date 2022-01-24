@@ -1,11 +1,10 @@
 const { build, log } = require('..')
 
-const monoscope = {}
 
 module.exports = async function start(buidConfig) {
 
   try {
-    let buildResult = await build(monoscope, buidConfig)
+    let buildResult = await build( buidConfig)
 
     // console.log(Object.keys(buildResult))
     
