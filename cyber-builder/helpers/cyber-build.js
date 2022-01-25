@@ -2,11 +2,11 @@ const { ajv, check, log, throwValidatorErrors, lodash: { cloneDeep } } = require
 const Unit = require('../units/Unit')
 const CyberBuilder = require('../units/CyberBuilder')
 
-
+const PREFIX = `[build]`
 
 module.exports = async ( buildConfig ) => { 
   // if (!scope) throw new Error('Scope is not defined')
-  if (!buildConfig) throw new Error('buildConfig is not defined')
+  if (!buildConfig) throw new Error(`${PREFIX} buildConfig is not defined`)
 
   
   // validate configs here
@@ -29,19 +29,26 @@ module.exports = async ( buildConfig ) => {
   
   
   // mk items
-  const rootUnitIndex = {}
+  const tagSelectorIndex = {}
+  const unitRefs = {}
   let rootUnit = null
   const resultItem = iterateUnitsUpDown(buildUnit, (unitConfig, parentResult) => {
     
-    const { indexKey, name: unitName } = unitConfig
+    const { tags, refKey, name: unitName } = unitConfig
 
     const newUnit = new Unit(unitConfig)
 
-    if (indexKey) {
-      if (rootUnitIndex[indexKey]) throw new Error(`unit ${unitConfig.name}, have alredy declared index: ${indexKey}`)
-      newUnit.spec.indexKey = indexKey
-      
-      rootUnitIndex[indexKey] = newUnit
+    newUnit.spec.tags = tags || []
+
+    for (const tag of newUnit.spec.tags) {
+      if (tagSelectorIndex[tag]) tagSelectorIndex[tag].push(newUnit)
+      else tagSelectorIndex[tag] = [ newUnit ]
+    }
+
+    if (refKey) {
+      if (unitRefs[refKey]) throw new Error(`${PREFIX} unit ${unitConfig.name}, have alredy declared ref: ${refKey}`)
+      newUnit.spec.refKey = refKey
+      unitRefs[refKey] = newUnit
     }
     
     if(!parentResult) { 
@@ -56,8 +63,8 @@ module.exports = async ( buildConfig ) => {
   })
 
 
-  resultItem.index = rootUnitIndex
-  
+  resultItem.tagSelector = tagSelectorIndex
+  resultItem.ref = unitRefs
   
   // init methods & state
   const { kindsDefinition } = buildConfig
@@ -66,21 +73,75 @@ module.exports = async ( buildConfig ) => {
     const { name, kind } = unit.spec
 
     const KindDefinition = kindsDefinition[kind]
-    if (!KindDefinition) throw new Error(`unit ${name}, kind:${kind } not found in kindsDefinition`)
+    if (!KindDefinition) throw new Error(`${PREFIX} unit ${name}, kind:${kind } not found in kindsDefinition`)
 
+    
     unit.spec.version = KindDefinition.version
     
+    // check schema
+    const configSchema = KindDefinition.configSchema
+    const { config } = unit
+    if (!ajv.validate(configSchema, config)) {
+      log(`${PREFIX} unit:${name} config validation err`,'ERR')
+      throwValidatorErrors(ajv)
+    }
+
+    // mk methods
     for (const methodName in KindDefinition.methods ) {
       unit[methodName] = KindDefinition.methods[methodName]
     }
     
+    // initialState
+    const initialState = KindDefinition.initialState || {}
+    for (const stateName in initialState) {
+      unit[stateName] = KindDefinition.methods[stateName]
+    }
+
     return {}
   })
   
+
+  // init dependencies
+  iterateUnitsUpDown(resultItem, (unit, parentResult) => {
+
+    const { name, kind } = unit.spec
+
+    const KindDefinition = kindsDefinition[kind]
+    if (!KindDefinition) throw new Error(`${PREFIX} unit ${name}, kind:${kind} not found in kindsDefinition`)
+
+
+    unit.spec.version = KindDefinition.version
+
+    // check schema
+    const configSchema = KindDefinition.configSchema
+    const { config } = unit
+    if (!ajv.validate(configSchema, config)) {
+      log(`${PREFIX} unit:${name} config validation err`, 'ERR')
+      throwValidatorErrors(ajv)
+    }
+
+    // mk methods
+    for (const methodName in KindDefinition.methods) {
+      unit[methodName] = KindDefinition.methods[methodName]
+    }
+
+    // initialState
+    const initialState = KindDefinition.initialState || {}
+    for (const stateName in initialState) {
+      unit[stateName] = KindDefinition.methods[stateName]
+    }
+
+    return {}
+  })
+
+
   resultItem.state = {}
   
   return resultItem
 }
+
+
+// DECLARATIONS ----------------
 
 function iterateUnitsDownUp(unitConfig, iterateFn, params = {}) {
 

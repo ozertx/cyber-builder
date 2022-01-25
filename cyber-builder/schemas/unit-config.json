@@ -6,7 +6,13 @@
       "required": [ ],
       "not": { "required": [ "key", "class", "_class", "name", "unit", "config", "properties", "property", "type" ] },
       "properties": {
-        "indexKey": { "type": "string", "minLength":1 },
+        "tags": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "refKey": { "type": "string", "minLength": 1 },
+        "dependencies": { "$ref": "#/definitions/unit-dependencies" },
         "units": {
           "type": "object",
           "patternProperties": {
@@ -15,6 +21,26 @@
           "additionalProperties": false
         }
       }
+    },
+    "unit-dependencies": { 
+      "type": "object",
+      "additionalProperties": { 
+        "type": ["object", "array"],
+        "if": { "type": "object" },
+        "then": { "$ref": "#/definitions/unit-dependency" },
+        "else": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/unit-dependency" }
+        }
+      }
+    },
+    "unit-dependency": {
+      "type": "object",
+      "properties": {
+        "ref": { "type": "string" },
+        "selector": { "type": "string" }
+      },
+      "additionalProperties": false
     }
   }
 }

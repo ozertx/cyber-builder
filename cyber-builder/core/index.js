@@ -36,6 +36,7 @@ ajv.addKeyword({
 
 const throwValidatorErrors = (ajvValidator, params = {}) => {
   log(`[validation ERR] shema:${ ajvValidator.shemaName } errors:`, "ERR")
+  localize[DEFAULT_LOCALIZE](ajvValidator.errors)
   log(ajvValidator.errors.map(e => `/${e.instancePath}: ${JSON.stringify(e)}` ).join('\n'))
   log(ajvValidator.errorsText(), "INFO")
 

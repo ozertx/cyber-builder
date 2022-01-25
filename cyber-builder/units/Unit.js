@@ -6,9 +6,11 @@ const Unit = class {
   spec = {
     kind: undefined,
     version: undefined,
-    name: undefined
-    // indexKey if defined
+    name: undefined,
+    tags: []
+    // refKey if defined
   }
+  dependencies = {}
   config = {}
   state = {}
   units = {}
@@ -28,6 +30,18 @@ const Unit = class {
 
   log(t, l, p) {
     log(`[${ this.spec.name }] ${t}`, l, p)
+  }
+
+  throwError(err, p) {
+    let msg = ''
+    if(typeof(err) === 'string') {
+      msg = err
+    }
+    else {
+      msg = err.toString()
+    }
+    this.log(msg, 'ERR', p)
+    throw new Error(`[${this.spec.name }] ${msg}`)
   }
 
 }

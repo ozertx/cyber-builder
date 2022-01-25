@@ -19,7 +19,7 @@
     },
     "unit-kind-definition": {
       "type": "object",
-      "required": [ "kind", "version", "configSchema", "methods", "initialState", "stateSchema" ],
+      "required": [ "kind", "version", "configSchema", "methods", "initialState" ],
       "properties": {
         "kind": { "type": "string" },
         "version": { 
@@ -29,12 +29,29 @@
         "configSchema": { "isSchema": true },
         "methods": { "$ref": "#/definitions/build-hooks" },
         "stateSchema": { "isSchema": true },
-        "initialState": { "type": "object" }
-      }
+        "initialState": { "type": "object" },
+        "dependencies": { 
+          "type": "object",
+          "patternProperties": { 
+            "^[а-яА-Я\\w\\-]+$": { "$ref": "#/definitions/dependency-definition" }
+          },
+          "additionalProperties": false        
+        }
+      },
+      "additionalProperties": false
+
     },
     "build-hooks": {
       "type": "object",
       "additionalProperties": { "isLambda": true }
+    },
+    "dependency-definition": {
+      "type": "object",
+      "properties": {
+        "multiply": { "type": "boolean" },
+        "expectedKind": { "type": "string", "minLength":1 }
+      },
+      "additionalProperties": false
     }
   }
 }

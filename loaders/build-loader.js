@@ -16,7 +16,7 @@ const loadConfig = async () => {
     },
     hooks,
     build: {
-      "name": "cyberBuilder:CyberBuilder",
+      "name": "buildLoader:CyberBuilder",
       "units": {
         "loader:BuildLoader": {
           ...config
@@ -31,10 +31,9 @@ const loadConfig = async () => {
 
   const buildConfig = await configBuilder.getUnit('loader:BuildLoader').execute()
 
-  console.log("--- buildConfig", buildConfig)
+  configBuilder.log(`builded OK`)
 
   return buildConfig
-
 }
 
 module.exports = loadConfig

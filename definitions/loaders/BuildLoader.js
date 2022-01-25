@@ -7,11 +7,21 @@ const BuildLoader = {
 
   "configSchema": {
     "type": "object",
-    "required": ["definitionsFolders", "buildConfigPath1"]
+    "required": ["definitionsFolders", "buildConfigPath"],
+    "properties": {
+      "definitionsFolders": {},
+      "buildConfigPath": {}
+    }
   },
   "stateSchema": {},
   "initialState": {
     buildConfig:null,
+  },
+  "dependencies": {
+    "definitionsFolders": {
+      "multiply": true,
+      "expectedKind": "FsDirectory"
+    }
   },
   "methods": {
 
