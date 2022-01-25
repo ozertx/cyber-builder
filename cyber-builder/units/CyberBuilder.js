@@ -14,11 +14,12 @@ module.exports = {
       let valid = true
       for (const unitName in initResult.units) {
         if (initResult.units[unitName].error) {
+          this.units[unitName].log(`${initResult.units[unitName].error}`, 'ERR')
           valid = false
         }
       }
 
-      if(! valid ) throw new Error('some units init fail')
+      if (!valid) this.throwError('some units init fail')
     },
 
     async start() {
@@ -26,11 +27,12 @@ module.exports = {
       let valid = true
       for (const unitName in initResult.units) {
         if (initResult.units[unitName].error) {
+          this.units[unitName].log(`${initResult.units[unitName].error}`, 'ERR')
           valid = false
         }
       }
 
-      if (!valid) throw new Error('some units start fail')
+      if (!valid) this.throwError('some units start fail')
     },
 
     async iterateMethodCall(methodName, p1, p2, params = {} ) {
@@ -48,8 +50,6 @@ module.exports = {
         result.units[unitName] = iterateResult
       }
       catch (err) {
-        this.log(err)
-        this.log(err.toString(), "ERR")        
         result.units[unitName] = {
           error: err.toString(),
           err

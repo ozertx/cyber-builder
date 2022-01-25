@@ -1,25 +1,35 @@
 'use strict'
 
 const { BuildLoader } = require('../definitions/loaders/BuildLoader')
-const config = require('./default-config-loader.json')
-const { build, log } = require('../cyber-builder')
-
+const { FsDirectory } = require('../definitions/fs/FsDirectory')
+const { build, log, ajv, throwValidatorErrors } = require('../cyber-builder')
 
 const hooks = { }
 
+const loadConfig = async (config) => {
 
-const loadConfig = async () => {
+  if (!ajv.validate(BuildLoader.configSchema, config)) throwValidatorErrors(ajv)
 
+  const loaderUnits = {}
+
+  let cnt = 0
+  for (const path of config.definitionsFolders) {
+    const key = `folder-${cnt++}:FsDirectory`
+    loaderUnits[key] = { path }
+  } 
+
+  
   const loaderConfig = {
     kindsDefinition: {
-      BuildLoader
+      BuildLoader, FsDirectory
     },
     hooks,
     build: {
       "name": "buildLoader:CyberBuilder",
       "units": {
         "loader:BuildLoader": {
-          ...config
+          ...config,
+          "units": loaderUnits
         }
       }
     }

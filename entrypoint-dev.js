@@ -1,4 +1,6 @@
+'use strict'
 const { log, start } = require('./cyber-builder')
+const loaderConfig = require('./_configs/loader-config.json')
 
 const PREFIX = '[entrypoint]'
 
@@ -11,9 +13,10 @@ const run = async () => {
   let buidConfig
   
   try {
-    buidConfig = await Loader() 
+    buidConfig = await Loader(loaderConfig) 
   }
   catch (err) {
+    log(err)
     log(`${PREFIX} Config load ERR. ${err.toString()}`, 'ERR')
     process.exit(0)
   }

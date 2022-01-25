@@ -1,6 +1,6 @@
 const fs = require('fs').promises
 
-const BuildLoader = {
+const FsDirectory = {
   "kind": "FsDirectory",
   "version": "0.1",
 
@@ -19,11 +19,10 @@ const BuildLoader = {
 
     async init() {
       const { path } = this.config
-      if (! await fs.exists(path)) this.throwError(`Path '${path}' not exist.`)
+      
+      stat = await fs.stat(path).catch( err => this.throwError(`INIT ${err.toString()}`) )
 
-      const lstat = await fs.lstat(path) 
-
-      if (!lstat.isDirectory()) this.throwError(`Path '${path}' is not directory.`)
+      if (!stat.isDirectory()) this.throwError(`INIT Error: Path '${path}' is not directory.`)
     }
 
   }
@@ -31,4 +30,4 @@ const BuildLoader = {
 
 
 
-module.exports = { BuildLoader }
+module.exports = { FsDirectory }

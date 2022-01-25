@@ -35,10 +35,12 @@ ajv.addKeyword({
 })
 
 const throwValidatorErrors = (ajvValidator, params = {}) => {
-  log(`[validation ERR] shema:${ ajvValidator.shemaName } errors:`, "ERR")
+  const schemaText = ajvValidator.schemaName ? ` schema: ${ajvValidator.schemaName }` : ''
+  log(`[validation ERR]${schemaText} errors:`, "ERR")
+  if (params.item) log(`[validation item] ${JSON.stringify(params.item)}`)
   localize[DEFAULT_LOCALIZE](ajvValidator.errors)
-  log(ajvValidator.errors.map(e => `/${e.instancePath}: ${JSON.stringify(e)}` ).join('\n'))
   log(ajvValidator.errorsText(), "INFO")
+  log(ajvValidator.errors.map(e => `[ERR] /${e.instancePath}: ${JSON.stringify(e)}` ).join('\n'))
 
   throw new Error(`[ajvValidator ERR]`)
 }
@@ -51,7 +53,7 @@ const schemas = {
 const check = {}
 for (const schemaName in schemas ) {
   check[schemaName] = ajv.compile(schemas[schemaName])
-  check[schemaName].shemaName = `./cyber-builder/schemas/${schemaName}.json`
+  check[schemaName].schemaName = `./cyber-builder/schemas/${schemaName}.json`
   check[schemaName].errorsText = () => {
     const validate = check[schemaName]
     localize[DEFAULT_LOCALIZE](validate.errors)

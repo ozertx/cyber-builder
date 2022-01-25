@@ -17,9 +17,24 @@ module.exports = async ( buildConfig ) => {
   
   if (!check['unit-config'](buildUnit)) throwValidatorErrors(check['unit-config'])
   
-  buildConfig['kindsDefinition']['CyberBuilder'] = CyberBuilder
-  // BUILDING OBJECTS
+
+  // FIX kindsDefinition
+  const { kindsDefinition } = buildConfig
+  kindsDefinition['CyberBuilder'] = CyberBuilder
+  kindsDefinition['Unit'] = Unit
+
+  // fix name property
+  for (const kind in kindsDefinition) {
+
+    const { configSchema } = kindsDefinition[kind]
+    if (!configSchema) continue
+    if (configSchema.additionalProperties !== false) continue
+
+    if (configSchema.properties) configSchema.properties.name = { "type": "string" }
+    else configSchema.properties = { name: { "type": "string" } }
+  }
   
+  // BUILDING OBJECTS
   
   // fix names
   iterateUnitsDownUp(buildUnit, (unitConfig) => {
@@ -67,13 +82,12 @@ module.exports = async ( buildConfig ) => {
   resultItem.ref = unitRefs
   
   // init methods & state
-  const { kindsDefinition } = buildConfig
   iterateUnitsUpDown(resultItem, (unit, parentResult) => {
     
     const { name, kind } = unit.spec
 
     const KindDefinition = kindsDefinition[kind]
-    if (!KindDefinition) throw new Error(`${PREFIX} unit ${name}, kind:${kind } not found in kindsDefinition`)
+    if (!KindDefinition) throw new Error(`${PREFIX} unit ${name}, kind:${kind} not found in kindsDefinition. Defined kinds: ${Object.keys(kindsDefinition).join(', ') }`)
 
     
     unit.spec.version = KindDefinition.version
@@ -83,7 +97,7 @@ module.exports = async ( buildConfig ) => {
     const { config } = unit
     if (!ajv.validate(configSchema, config)) {
       log(`${PREFIX} unit:${name} config validation err`,'ERR')
-      throwValidatorErrors(ajv)
+      throwValidatorErrors(ajv, { item: config })
     }
 
     // mk methods
