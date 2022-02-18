@@ -1,4 +1,4 @@
-const { iterateUnitUpDownAsync } = require('../helpers/unit-iterators')
+const { iterateUnitsUpDown } = require('../helpers/unit-iterators')
 
 module.exports = {
   "kind": "CyberBuilder",
@@ -40,7 +40,7 @@ module.exports = {
       const result = { units: {} }
 
       for (const unitName in this.units) try {
-        const iterateResult = await iterateUnitUpDownAsync(this.units[unitName], async (unitableObject, upResult) => {
+        const iterateResult = await iterateUnitsUpDown(this.units[unitName], async (unitableObject, upResult) => {
           if (unitableObject[methodName]) {
             const methodResult = await unitableObject[methodName](p1, p2)
             return { result: methodResult }

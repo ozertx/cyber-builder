@@ -43,6 +43,15 @@ const BuildLoader = {
 
 
     async execute(data, params) {
+
+      console.log(this)
+
+      this.iterateUnitsFlat( (unit) => {
+
+        console.log(unit)
+
+      })
+
       return this.buildConfig
     }
 

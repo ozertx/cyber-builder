@@ -23,8 +23,11 @@ const FsDirectory = {
       stat = await fs.stat(path).catch( err => this.throwError(`INIT ${err.toString()}`) )
 
       if (!stat.isDirectory()) this.throwError(`INIT Error: Path '${path}' is not directory.`)
-    }
+    },
 
+    async load() {
+
+    }
   }
 }
 

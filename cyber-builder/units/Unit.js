@@ -1,5 +1,6 @@
+const util = require('util')
 const { log } = require('../core/index')
-
+const unitIterators = require('../helpers/unit-iterators')
 
 const Unit = class {
 
@@ -25,7 +26,7 @@ const Unit = class {
       kind: unitConfig.name.split(':')[1],
       name: unitConfig.name,
     }
-    this.config = unitConfig    
+    this.config = unitConfig
   }
 
   log(t, l, p) {
@@ -46,5 +47,25 @@ const Unit = class {
 
 }
 
+
+
+// Apply iterators to constructor FN
+for( const itName in unitIterators) {
+  const iterator = unitIterators[itName]
+
+  if(typeof(iterator) !== 'function') continue
+
+  if(iterator[Symbol.toStringTag] === 'AsyncFunction') {
+    Unit[itName] = async (...args) => {
+      return await iterator(this, ...args)
+    }
+  }
+  else {
+    Unit[itName] = (...args) => {
+      args[0] = this
+      return iterator(this, ...args)
+    }
+  }
+}
 
 module.exports = Unit
