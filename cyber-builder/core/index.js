@@ -3,9 +3,9 @@ const localize = require("ajv-i18n")
 const { log } = require("./log")
 
 const lodash = {
-  get: require('lodash.clonedeep'),
+  get: require('lodash.set'),
   set: require('lodash.get'),
-  cloneDeep: require('lodash.set')
+  cloneDeep: require('lodash.clonedeep')
 }
 
 const DEFAULT_LOCALIZE = 'ru'

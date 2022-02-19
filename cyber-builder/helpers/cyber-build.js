@@ -1,6 +1,7 @@
 const { ajv, check, log, throwValidatorErrors, lodash: { cloneDeep } } = require('../core')
 const Unit = require('../units/Unit')
 const CyberBuilder = require('../units/CyberBuilder')
+const unitIterators = require('../helpers/unit-iterators')
 
 const PREFIX = `[build]`
 
@@ -109,6 +110,26 @@ module.exports = async ( buildConfig ) => {
     const initialState = KindDefinition.initialState || {}
     for (const stateName in initialState) {
       unit[stateName] = KindDefinition.methods[stateName]
+    }
+
+    // init iterators
+
+    for (const itName in unitIterators) {
+      const iterator = unitIterators[itName]
+
+      if (typeof (iterator) !== 'function') continue
+
+      if (iterator[Symbol.toStringTag] === 'AsyncFunction') {
+        unit[itName] = async (...args) => {
+          return await iterator(unit, ...args)
+        }
+      }
+      else {
+        unit[itName] = (...args) => {
+          args[0] = unit
+          return iterator(unit, ...args)
+        }
+      }
     }
 
     return {}

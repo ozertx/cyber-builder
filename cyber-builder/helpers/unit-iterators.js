@@ -35,6 +35,7 @@ module.exports.iterateUnitsUpDown = async (unitableObject, iterateFn, upResult, 
 module.exports.iterateUnitsFlat = async (unitableObject, iterateFn, upResult, params = {}) => {
 
   const objectUnits = unitableObject.units || {}
+  const result = {}
   for (let unitName in objectUnits) {
     result[unitName] = await iterateFn(unitableObject, upResult)
   }

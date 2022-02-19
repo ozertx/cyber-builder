@@ -1,18 +1,18 @@
 {
   "name": "cyber-builder",
-  "version": "0.0.2",
+  "version": "0.0.5",
   "description": "build, and start",
   "main": "start.js",
   "scripts": {
     "dev": "nodemon -e .js,.json --exec node entrypoint-dev.js",
     "entrypoint_docker": "node start.js",
-    "publish": "npm publish"
+    "publish_npm": "npm publish"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ozertx/cyber-builder.git"
   },
-  "author": "ozertx",
+  "author": "Usanov V.A.",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ozertx/cyber-builder/issues"

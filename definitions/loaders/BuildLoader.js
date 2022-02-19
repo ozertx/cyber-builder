@@ -43,12 +43,14 @@ const BuildLoader = {
 
 
     async execute(data, params) {
-
       console.log(this)
+
+      console.log(Object.getPrototypeOf(this))
+      console.log(Object.keys(this))
 
       this.iterateUnitsFlat( (unit) => {
 
-        console.log(unit)
+        console.log(unit.spec)
 
       })
 
